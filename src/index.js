@@ -1,16 +1,15 @@
 import Inferno from 'inferno'
-import { pipe } from 'ramda'
-import { el, renderer, getTargetValue } from './Util/Util'
+import { el, renderer } from './Util/Util'
+import { inc, dec, pipe } from 'ramda'
 
-const View = name => (
+const render = renderer(el('app'));
+
+const Counter = (count) => (
   <div>
-    <input
-      placeholder='Type your name'
-      onInput={pipe(getTargetValue, main)}
-    />
-    <div>Hi, {name}</div>
+    <button onClick={() => main(inc(count))}>+</button>
+    {count}
+    <button onClick={() => main(dec(count))}>-</button>
   </div>
-);
-
-const main = pipe(View, renderer(el('app')));
-main('');
+)
+const main = pipe(Counter, render)
+main(0)
