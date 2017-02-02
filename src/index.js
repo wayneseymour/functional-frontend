@@ -1,16 +1,21 @@
 import Inferno from 'inferno'
-import R from 'ramda'
+import { pipe, path } from 'ramda'
 
-const el = id => document.getElementById(id)
-
+const el = id => document.getElementById(id);
 const renderer = node => component =>
-  Inferno.render(component, node)
-const render = renderer(el('app'))
+  Inferno.render(component, node);
+const render = renderer(el('app'));
 
-const Time = currentDate => (
-  <div>Curent date: {`${currentDate}`}</div>
-)
+const getTargetValue = path(['target', 'value']);
 
-const main = R.compose(render, Time)
-setInterval(() => main(new Date()), 1000)
-
+const View = name => (
+  <div>
+    <input
+      placeholder='Type your name'
+      onInput={pipe(getTargetValue, main)}
+    />
+    <div>Hi, {name}</div>
+  </div>
+);
+const main = pipe(View, render);
+main('');
