@@ -1,19 +1,16 @@
 import Inferno from 'inferno'
 import { pipe } from 'ramda'
-
-const el = id => document.getElementById(id);
-const renderer = node => component =>
-  Inferno.render(component, node);
-const render = renderer(el('app'));
+import { el, renderer, getTargetValue } from './Util/Util'
 
 const View = name => (
   <div>
     <input
       placeholder='Type your name'
-      onInput={pipe(e => e.target.value, main)}
+      onInput={pipe(getTargetValue, main)}
     />
     <div>Hi, {name}</div>
   </div>
 );
-const main = pipe(View, render);
+
+const main = pipe(View, renderer(el('app')));
 main('');
